@@ -1,0 +1,125 @@
+:root {
+  --green: #1a7a3c;
+  --green-light: #e8f5ee;
+  --blue: #1a4a7a;
+  --accent: #2563eb;
+  --danger: #dc2626;
+  --warn: #d97706;
+  --bg: #f9fafb;
+  --card: #fff;
+  --border: #e5e7eb;
+  --text: #111827;
+  --muted: #6b7280;
+  --radius: 6px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       font-size: 14px; color: var(--text); background: var(--bg); }
+
+/* Nav */
+.nav { display: flex; align-items: center; gap: 2rem; padding: 0 1.5rem;
+       height: 48px; background: var(--green); color: #fff; }
+.nav-brand { font-weight: 700; font-size: 15px; letter-spacing: .5px; }
+.nav-links { display: flex; gap: 1.5rem; }
+.nav-links a { color: rgba(255,255,255,.8); text-decoration: none; font-size: 13px; }
+.nav-links a:hover, .nav-links a.active { color: #fff; }
+
+/* Main */
+.main { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+
+/* Tabs */
+.tab { display: none; }
+.tab.active { display: block; }
+
+/* Section header */
+.section-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+.section-header h2 { font-size: 16px; font-weight: 600; }
+.section-header h3 { font-size: 14px; font-weight: 600; }
+
+/* Stats row */
+.stats-row { display: flex; gap: 1rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+.stat-card { background: var(--card); border: 1px solid var(--border);
+             border-radius: var(--radius); padding: .75rem 1.25rem; min-width: 140px; }
+.stat-card .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; }
+.stat-card .value { font-size: 22px; font-weight: 700; color: var(--green); margin-top: 2px; }
+
+/* Table */
+.table { width: 100%; border-collapse: collapse; background: var(--card);
+         border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.table th { padding: .5rem .75rem; text-align: left; font-size: 11px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: .4px; color: var(--muted);
+            background: var(--bg); border-bottom: 1px solid var(--border); }
+.table td { padding: .5rem .75rem; border-bottom: 1px solid var(--border); }
+.table tr:last-child td { border-bottom: none; }
+.table tr:hover td { background: var(--green-light); }
+
+/* Badges */
+.badge { display: inline-flex; align-items: center; justify-content: center;
+         padding: 1px 7px; border-radius: 9999px; font-size: 11px; font-weight: 600; }
+.badge-tier-pigeon      { background: #f3f4f6; color: var(--muted); }
+.badge-tier-tits        { background: #dbeafe; color: #1d4ed8; }
+.badge-tier-flock       { background: #ede9fe; color: #6d28d9; }
+.badge-tier-sust        { background: #dcfce7; color: #166534; }
+.badge-tier-business    { background: #fef3c7; color: #92400e; }
+.badge-status-pending   { background: #fef3c7; color: #92400e; }
+.badge-status-progress  { background: #dbeafe; color: #1d4ed8; }
+.badge-status-completed { background: #dcfce7; color: #166534; }
+.badge-status-rejected  { background: #fee2e2; color: #991b1b; }
+.badge-overdue          { background: var(--danger); color: #fff; }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; gap: .4rem; padding: .4rem .9rem;
+       background: var(--green); color: #fff; border: none; border-radius: var(--radius);
+       font-size: 13px; font-weight: 500; cursor: pointer; }
+.btn:hover { opacity: .9; }
+.btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+.btn-sm { padding: .25rem .6rem; font-size: 12px; background: transparent;
+          color: var(--text); border: 1px solid var(--border); border-radius: var(--radius);
+          cursor: pointer; }
+.btn-sm.active { background: var(--green); color: #fff; border-color: var(--green); }
+.btn-link { background: none; border: none; color: var(--accent); cursor: pointer;
+            font-size: 13px; padding: 0; text-decoration: underline; }
+
+/* Legal */
+.legal-nav { display: flex; gap: .5rem; margin-bottom: 1rem; }
+.legal-box { background: var(--card); border: 1px solid var(--border);
+             border-radius: var(--radius); padding: 1rem; white-space: pre-wrap;
+             font-size: 13px; max-height: 300px; overflow-y: auto; color: var(--muted); }
+
+/* Form */
+.form-grid { display: grid; gap: .75rem; }
+.form-grid label { display: flex; flex-direction: column; gap: .3rem;
+                   font-size: 12px; font-weight: 500; color: var(--muted); }
+.form-grid.full { grid-column: 1/-1; }
+.form-grid input, .form-grid select, .form-grid textarea {
+  padding: .4rem .6rem; border: 1px solid var(--border); border-radius: var(--radius);
+  font-size: 13px; font-family: inherit; }
+.form-grid textarea { resize: vertical; font-family: monospace; }
+
+/* VAT OSS */
+.oss-controls { display:flex; gap:1rem; align-items:flex-end; margin-bottom:1rem; }
+.oss-controls label { display:flex; flex-direction:column; gap:.3rem; font-size:12px; font-weight:500; color:var(--muted); }
+.oss-controls input, .oss-controls select { padding:.4rem .6rem; border:1px solid var(--border); border-radius:var(--radius); font-size:13px; }
+.oss-banner { padding:.75rem 1rem; border-radius:var(--radius); font-size:13px; margin-bottom:.5rem; }
+.oss-banner-ok   { background:#e8f5ee; color:#166534; border:1px solid #bbf7d0; }
+.oss-banner-warn { background:#fef3c7; color:#92400e; border:1px solid #fde68a; }
+.oss-note { margin-top:1rem; font-size:12px; color:var(--muted); padding:.75rem; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border); }
+
+/* Availability toggle */
+.toggle { display:flex; align-items:center; gap:.4rem; cursor:pointer; }
+.toggle input[type=checkbox] { display:none; }
+.toggle input:checked + .badge { background:#dcfce7; color:#166534; }
+
+/* Modal */
+dialog { border: none; border-radius: 8px; padding: 1.5rem; width: 400px;
+         box-shadow: 0 8px 32px rgba(0,0,0,.15); }
+dialog h3 { margin-bottom: 1rem; font-size: 15px; }
+dialog label { display: flex; flex-direction: column; gap: .3rem; margin-bottom: .75rem;
+               font-size: 12px; font-weight: 500; color: var(--muted); }
+dialog input, dialog select, dialog textarea {
+  padding: .4rem .6rem; border: 1px solid var(--border); border-radius: var(--radius); font-size: 13px; }
+dialog textarea { resize: vertical; }
+.modal-actions { display: flex; gap: .5rem; margin-top: 1rem; justify-content: flex-end; }
+dialog::backdrop { background: rgba(0,0,0,.3); }

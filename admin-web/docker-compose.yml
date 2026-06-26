@@ -1,0 +1,63 @@
+services:
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       mwt
+      POSTGRES_USER:     mwt
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dev}
+    ports:
+      - "5433:5432"   # 5433 so it doesn't clash with tax-portal's postgres on 5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mwt -d mwt"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  flyway:
+    image: flyway/flyway:10-alpine
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./migrations:/flyway/sql:ro
+    environment:
+      FLYWAY_URL:                   jdbc:postgresql://db:5432/mwt
+      FLYWAY_USER:                  mwt
+      FLYWAY_PASSWORD:              ${POSTGRES_PASSWORD:-dev}
+      FLYWAY_LOCATIONS:             filesystem:/flyway/sql
+      FLYWAY_BASELINE_ON_MIGRATE:   "true"
+      FLYWAY_VALIDATE_ON_MIGRATE:   "true"
+      FLYWAY_OUT_OF_ORDER:          "false"
+    command: migrate
+    # Exits with 0 on success — backend waits for this before starting
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      flyway:
+        condition: service_completed_successfully
+    ports:
+      - "3002:3002"
+    environment:
+      DATABASE_URL:                  postgres://mwt:${POSTGRES_PASSWORD:-dev}@db:5432/mwt
+      JWT_SECRET:                    ${JWT_SECRET:?JWT_SECRET is required}
+      PORT:                          3002
+      MULTISAFEPAY_WEBHOOK_SECRET:   ${MULTISAFEPAY_WEBHOOK_SECRET:-}
+      MULTISAFEPAY_API_KEY:          ${MULTISAFEPAY_API_KEY:-}
+      MULTISAFEPAY_ENV:              ${MULTISAFEPAY_ENV:-test}
+      BREVO_SMTP_LOGIN:              ${BREVO_SMTP_LOGIN:-}
+      BREVO_SMTP_KEY:                ${BREVO_SMTP_KEY:-}
+      EMAIL_FROM:                    ${EMAIL_FROM:-billing@mwt.app}
+      ADMIN_ALLOWED_ORIGIN:          ${ADMIN_ALLOWED_ORIGIN:-}
+      LOG_LEVEL:                     ${LOG_LEVEL:-info}
+      NODE_ENV:                      ${NODE_ENV:-production}
+
+volumes:
+  pgdata:

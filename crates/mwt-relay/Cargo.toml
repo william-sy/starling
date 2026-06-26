@@ -1,0 +1,49 @@
+[package]
+name = "mwt-relay"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# HTTP server
+axum = { version = "0.7", features = ["ws"] }
+tower = "0.4"
+tower-http = { version = "0.5", features = ["trace", "cors", "limit"] }
+
+# NATS + JetStream
+async-nats = "0.35"
+
+# IDs and time
+uuid = { version = "1", features = ["v4"] }
+ulid = "1"
+
+# Crypto (for auth signature verification + TURN credentials)
+ed25519-dalek = { version = "2", features = ["rand_core"] }
+hex = "0.4"
+rand = { workspace = true }
+hmac = "0.12"
+sha1 = "0.10"
+base64 = "0.22"
+
+# Rate limiting
+governor = "0.6"
+nonzero_ext = "0.3"
+
+# Config
+dotenvy = "0.15"
+
+# Async utilities
+futures = "0.3"
+
+# HTTP client for OG preview fetching
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "gzip"] }
+
+# Serialisation helpers
+bytes = "1"

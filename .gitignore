@@ -1,0 +1,7 @@
+target/
+.DS_Store
+*.pem
+*.key
+.env
+docs
+PRODUCT.md

@@ -1,0 +1,34 @@
+[package]
+name = "mwt-crypto"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Asymmetric crypto
+x25519-dalek = { version = "2", features = ["static_secrets", "reusable_secrets"] }
+ed25519-dalek = { version = "2", features = ["rand_core"] }
+
+# AEAD
+chacha20poly1305 = "0.10"
+
+# KDF
+hkdf = "0.12"
+sha2 = "0.10"
+hmac = "0.12"
+
+# MLS
+openmls = { version = "0.5", default-features = false }
+openmls_rust_crypto = "0.2"
+openmls_basic_credential = "0.2"
+
+# BIP39 recovery phrase
+bip39 = "2"
+
+# Utilities
+zeroize = { workspace = true }
+rand = { workspace = true }
+serde = { workspace = true }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+hex = "0.4"

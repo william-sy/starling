@@ -1,0 +1,14 @@
+[package]
+name = "mwt-client"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+mwt-crypto = { path = "../mwt-crypto" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }
+tauri = { version = "2", features = [] }
+tauri-plugin-shell = "2"
+tauri-plugin-notification = "2"

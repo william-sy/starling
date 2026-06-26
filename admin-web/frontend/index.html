@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>mwt admin</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <nav class="nav">
+    <span class="nav-brand">mwt admin</span>
+    <div class="nav-links">
+      <a href="#" data-tab="billing">Billing</a>
+      <a href="#" data-tab="vat">VAT OSS</a>
+      <a href="#" data-tab="availability">Availability</a>
+      <a href="#" data-tab="gdpr">GDPR</a>
+      <a href="#" data-tab="legal">Legal</a>
+    </div>
+  </nav>
+
+  <main class="main">
+    <!-- BILLING TAB -->
+    <section id="tab-billing" class="tab active">
+      <div class="section-header">
+        <h2>Customers &amp; billing</h2>
+      </div>
+      <div id="billing-stats" class="stats-row"></div>
+      <table class="table" id="customers-table">
+        <thead><tr>
+          <th>PIN</th><th>Tier</th><th>Email</th><th>Payments</th><th>Total paid</th><th>Since</th><th></th>
+        </tr></thead>
+        <tbody id="customers-body"></tbody>
+      </table>
+    </section>
+
+    <!-- VAT OSS TAB -->
+    <section id="tab-vat" class="tab">
+      <div class="section-header">
+        <h2>Tax reports</h2>
+      </div>
+      <div class="oss-controls">
+        <label>Year <input type="number" id="oss-year" value="" style="width:80px"></label>
+        <label>Quarter
+          <select id="oss-quarter">
+            <option value="1">Q1 (Jan–Mar)</option>
+            <option value="2">Q2 (Apr–Jun)</option>
+            <option value="3">Q3 (Jul–Sep)</option>
+            <option value="4">Q4 (Oct–Dec)</option>
+          </select>
+        </label>
+        <button class="btn" onclick="loadOss()">Load</button>
+      </div>
+
+      <h3 style="margin:1.25rem 0 .5rem;font-size:14px">EU — Belastingdienst OSS</h3>
+      <div id="oss-threshold-banner" class="oss-banner" style="display:none"></div>
+      <div id="oss-stats" class="stats-row" style="margin-top:.5rem"></div>
+      <table class="table" style="margin-top:.75rem">
+        <thead><tr>
+          <th>Country</th><th>Rate</th>
+          <th style="text-align:right">Net</th>
+          <th style="text-align:right">VAT owed</th>
+          <th style="text-align:right">Gross</th>
+          <th style="text-align:right">Txns</th>
+        </tr></thead>
+        <tbody id="oss-body"></tbody>
+      </table>
+      <p class="oss-note">File via <b>mijn.belastingdienst.nl → One Stop Shop</b> by end of month following each quarter (Q1→30 Apr, Q2→31 Jul, Q3→31 Oct, Q4→31 Jan).</p>
+
+      <h3 style="margin:1.5rem 0 .5rem;font-size:14px">UK — HMRC VAT</h3>
+      <div id="uk-stats" class="stats-row"></div>
+      <p class="oss-note">File via <b>HMRC Making Tax Digital</b> (VAT MTD portal). Register once at gov.uk/vat-registration when you have UK sales. 20% flat rate, quarterly return.</p>
+
+      <h3 style="margin:1.5rem 0 .5rem;font-size:14px">Rest of World — informational only</h3>
+      <div id="row-stats" class="stats-row"></div>
+      <table class="table" style="margin-top:.75rem">
+        <thead><tr>
+          <th>Country</th>
+          <th style="text-align:right">Gross (no tax collected)</th>
+          <th style="text-align:right">Txns</th>
+        </tr></thead>
+        <tbody id="row-body"></tbody>
+      </table>
+      <p class="oss-note"><b>No tax collected from ROW customers yet.</b> When US/CA/Asia revenue becomes material, integrate <b>Stripe Tax</b> (automated nexus tracking) or switch to a Merchant of Record (Paddle). US nexus: $100k or 200 txns per state.</p>
+    </section>
+
+    <!-- AVAILABILITY TAB -->
+    <section id="tab-availability" class="tab">
+      <div class="section-header">
+        <h2>Country availability &amp; waitlist</h2>
+      </div>
+      <p class="oss-note" style="margin-bottom:1rem">
+        Toggle paid tiers on/off per country. When you flip a country live, use
+        <b>Notify waitlist</b> to email everyone who registered interest.
+      </p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+        <!-- Flag table -->
+        <div>
+          <h3 style="font-size:13px;font-weight:600;margin-bottom:.5rem">Paid tier availability</h3>
+          <table class="table" id="flags-table">
+            <thead><tr>
+              <th>Country</th><th>Paid</th><th>Waitlist</th><th>Launch date</th><th></th>
+            </tr></thead>
+            <tbody id="flags-body"></tbody>
+          </table>
+        </div>
+
+        <!-- Waitlist summary -->
+        <div>
+          <h3 style="font-size:13px;font-weight:600;margin-bottom:.5rem">Waitlist by country</h3>
+          <table class="table" id="waitlist-table">
+            <thead><tr>
+              <th>Country</th>
+              <th style="text-align:right">Pending</th>
+              <th style="text-align:right">Notified</th>
+              <th></th>
+            </tr></thead>
+            <tbody id="waitlist-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- GDPR TAB -->
+    <section id="tab-gdpr" class="tab">
+      <div class="section-header">
+        <h2>GDPR requests</h2>
+        <span class="badge" id="gdpr-overdue-count"></span>
+      </div>
+      <table class="table" id="gdpr-table">
+        <thead><tr>
+          <th>ID</th><th>Type</th><th>PIN</th><th>Email</th><th>Status</th><th>Due</th><th></th>
+        </tr></thead>
+        <tbody id="gdpr-body"></tbody>
+      </table>
+    </section>
+
+    <!-- LEGAL TAB -->
+    <section id="tab-legal" class="tab">
+      <div class="section-header">
+        <h2>Legal pages</h2>
+      </div>
+      <div class="legal-nav">
+        <button class="btn-sm active" data-page="terms_of_service">Terms of Service</button>
+        <button class="btn-sm" data-page="privacy_policy">Privacy Policy</button>
+        <button class="btn-sm" data-page="age_gate_text">Age Gate</button>
+      </div>
+      <div id="legal-current" class="legal-box"></div>
+      <div class="section-header" style="margin-top:2rem">
+        <h3>Publish new version</h3>
+      </div>
+      <form id="legal-form" class="form-grid">
+        <label>Version <input type="text" name="version" placeholder="1.2" required></label>
+        <label>Effective date <input type="date" name="effective_at" required></label>
+        <label>Published by <input type="text" name="published_by"></label>
+        <label class="full">Content (Markdown)
+          <textarea name="content_md" rows="12" required></textarea>
+        </label>
+        <button type="submit" class="btn">Publish</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- GDPR status modal -->
+  <dialog id="gdpr-modal">
+    <form method="dialog">
+      <h3>Update GDPR request</h3>
+      <input type="hidden" id="gdpr-modal-id">
+      <label>Status
+        <select id="gdpr-modal-status">
+          <option value="in_progress">In progress</option>
+          <option value="completed">Completed</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </label>
+      <label>Handler <input type="text" id="gdpr-modal-handler"></label>
+      <label>Notes <textarea id="gdpr-modal-notes" rows="3"></textarea></label>
+      <div class="modal-actions">
+        <button type="button" id="gdpr-modal-save" class="btn">Save</button>
+        <button type="button" id="gdpr-modal-cancel" class="btn btn-ghost">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

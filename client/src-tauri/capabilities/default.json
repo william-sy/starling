@@ -1,0 +1,14 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "mwt default capability set",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "shell:default",
+    "notification:default",
+    "haptics:default",
+    "biometric:default",
+    "dialog:default"
+  ]
+}

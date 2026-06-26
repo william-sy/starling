@@ -1,0 +1,18 @@
+[workspace]
+members = [
+    "crates/mwt-crypto",
+    "crates/mwt-relay",
+    "crates/mwt-admin",
+    "client/src-tauri",   # Tauri app — frontend in client/src/
+]
+resolver = "2"
+
+[workspace.dependencies]
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+anyhow = "1"
+thiserror = "1"
+tracing = "0.1"
+zeroize = { version = "1", features = ["derive"] }
+rand = "0.8"
