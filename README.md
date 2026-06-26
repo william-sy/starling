@@ -1,6 +1,9 @@
 # Welcome to Starling 
 
-This is Starling a free chat app that currently runs in your browser to-do: 
+This is Starling a chat app that currently runs in your browser/tauri build 
+![image](Images/image.png)
+
+Current to-do: 
 - Native Apps for Windows/Mac/Android
 - Native App for IOS
 - Stickers
